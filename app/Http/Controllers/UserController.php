@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Main\MediafileController;
+use App\Http\Controllers\MediafileController;
 
 class UserController extends Controller
 {
@@ -18,6 +18,9 @@ class UserController extends Controller
 			$users = User::query()
 				->with([
 					'mediafile',
+          'students',
+          'subjects',
+          'levels',
 				])
 				->when($filters != null, function ($query) use ($filters) {
 					$query->filterUser($filters);

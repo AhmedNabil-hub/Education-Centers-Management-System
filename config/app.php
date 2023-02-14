@@ -187,7 +187,7 @@ return [
          */
 
     Laravel\Socialite\SocialiteServiceProvider::class,
-    // Spatie\Permission\PermissionServiceProvider::class,
+    Spatie\Permission\PermissionServiceProvider::class,
     Intervention\Image\ImageServiceProvider::class,
 
     /*

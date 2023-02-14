@@ -2,42 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
-use App\Http\Controllers\Controller;
+use App\Models\Level;
+use App\Http\Requests\StoreLevelRequest;
+use App\Http\Requests\UpdateLevelRequest;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\StoreStudentRequest;
-use App\Http\Requests\UpdateStudentRequest;
 
-class StudentController extends Controller
+class LevelController extends Controller
 {
   public function index($pagination = null, $filters = null, $sort = null)
   {
     try {
-      $students = Student::query()
+      $levels = Level::query()
         ->with([
-          'user',
-          'level',
+          'students',
           'subjects',
+          'users',
         ])
         ->when($filters != null, function ($query) use ($filters) {
-          $query->filterStudent($filters);
+          $query->filterLevel($filters);
         })
         ->when($sort != null, function ($query) use ($sort) {
-          $query->sortStudent($sort);
+          $query->sortLevel($sort);
         });
 
       if ($pagination != null) {
         $inputs = request()->input();
-        $students = $students->paginate($pagination)->withQueryString();
+        $levels = $levels->paginate($pagination)->withQueryString();
       } else {
-        $students = $students->get();
+        $levels = $levels->get();
       }
 
-      $students = getResourceResponse(
+      $levels = getResourceResponse(
         request(),
-        'Student',
+        'Level',
         'Collection',
-        $students
+        $levels
       );
 
       request()->flash();
@@ -45,7 +44,7 @@ class StudentController extends Controller
       return [
         'message' => 'success',
         'data' => [
-          'students' => $students,
+          'levels' => $levels,
         ],
       ];
     } catch (\Exception $e) {
@@ -63,7 +62,7 @@ class StudentController extends Controller
     //
   }
 
-  public function store(StoreStudentRequest $request)
+  public function store(StoreLevelRequest $request)
   {
     try {
       $validator = Validator::make(
@@ -84,7 +83,7 @@ class StudentController extends Controller
 
       $validated_data = $validator->validated();
 
-      $student = Student::create($validated_data);
+      $level = Level::create($validated_data);
 
       return [
         'message' => 'success',
@@ -101,20 +100,20 @@ class StudentController extends Controller
     }
   }
 
-  public function show(Student $student)
+  public function show(Level $level)
   {
     try {
-      $student = getResourceResponse(
+      $level = getResourceResponse(
         request(),
-        'Student',
+        'Level',
         'ShowResource',
-        $student
+        $level
       );
 
       return [
         'message' => 'success',
         'data' => [
-          'student' => $student,
+          'level' => $level,
         ],
       ];
     } catch (\Exception $e) {
@@ -127,20 +126,20 @@ class StudentController extends Controller
     }
   }
 
-  public function edit(Student $student)
+  public function edit(Level $level)
   {
     try {
-      $student = getResourceResponse(
+      $level = getResourceResponse(
         request(),
-        'Student',
+        'Level',
         'ShowResource',
-        $student
+        $level
       );
 
       return [
         'message' => 'success',
         'data' => [
-          'student' => $student,
+          'level' => $level,
         ],
       ];
     } catch (\Exception $e) {
@@ -153,7 +152,7 @@ class StudentController extends Controller
     }
   }
 
-  public function update(UpdateStudentRequest $request, Student $student)
+  public function update(UpdateLevelRequest $request, Level $level)
   {
     try {
       $validator = Validator::make(
@@ -176,7 +175,7 @@ class StudentController extends Controller
 
       $validated_data = $validator->validated();
 
-      $student->update($validated_data);
+      $level->update($validated_data);
 
       return [
         'message' => 'success',
@@ -194,10 +193,10 @@ class StudentController extends Controller
     }
   }
 
-  public function destroy(Student $student)
+  public function destroy(Level $level)
   {
     try {
-      $student->delete();
+      $level->delete();
 
       return [
         'message' => 'success',

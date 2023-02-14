@@ -23,6 +23,7 @@ class UserFactory extends Factory
       'first_time_login' => $this->faker->boolean,
       'remember_token' => Str::random(10),
       'address' => $this->faker->address(),
+      'created_at' => $this->faker->dateTime(),
     ];
   }
 }

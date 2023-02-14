@@ -15,8 +15,8 @@ return new class extends Migration
   {
     Schema::create('students_subjects', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('subject_id');
-      $table->unsignedBigInteger('student_id');
+      $table->unsignedBigInteger('subject_id')->nullable();
+      $table->unsignedBigInteger('student_id')->nullable();
       $table->timestamps();
 
       $table->foreign('subject_id')

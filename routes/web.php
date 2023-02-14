@@ -118,19 +118,19 @@ Route::group(
   }
 );
 
-Route::redirect('/home', '/', 301);
-Route::get('/', [HomeController::class, 'index'])
-  ->name('home');
-Route::get('/about', [HomeController::class, 'about'])
-  ->name('about');
-Route::get('/contact', [HomeController::class, 'contact'])
-  ->name('contact');
-
 Route::group(
   [
     'middleware' => ['auth', 'verified']
   ],
   function () {
+    Route::redirect('/home', '/', 301);
+    Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
+    Route::get('/about', [HomeController::class, 'about'])
+    ->name('about');
+    Route::get('/contact', [HomeController::class, 'contact'])
+    ->name('contact');
+
     Route::get('/profile', [UserController::class, 'showProfile'])
       ->name('users.profile');
     Route::put('/users/{user}', [UserController::class, 'update'])

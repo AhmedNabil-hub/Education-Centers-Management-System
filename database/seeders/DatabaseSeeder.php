@@ -18,6 +18,13 @@ class DatabaseSeeder extends Seeder
 			[
 				PermissionSeeder::class,
 				UserSeeder::class,
+        LevelSeeder::class,
+        // SubjectSeeder::class,
+        // TeacherSeeder::class,
+        LevelUserSeeder::class,
+        StudentSeeder::class,
+        LevelSubjectSeeder::class,
+        StudentSubjectSeeder::class,
 			]
 		);
 
